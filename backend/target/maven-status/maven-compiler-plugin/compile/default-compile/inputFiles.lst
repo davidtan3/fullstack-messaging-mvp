@@ -1,0 +1,6 @@
+/Users/chloventan/Desktop/messenger/backend/src/main/java/com/example/messenger/MessengerApplication.java
+/Users/chloventan/Desktop/messenger/backend/src/main/java/com/example/messenger/config/WebSocketConfig.java
+/Users/chloventan/Desktop/messenger/backend/src/main/java/com/example/messenger/dto/ChatMessage.java
+/Users/chloventan/Desktop/messenger/backend/src/main/java/com/example/messenger/service/SessionRegistry.java
+/Users/chloventan/Desktop/messenger/backend/src/main/java/com/example/messenger/websocket/ChatWebSocketHandler.java
+/Users/chloventan/Desktop/messenger/backend/src/main/java/com/example/messenger/websocket/UsernameHandshakeInterceptor.java

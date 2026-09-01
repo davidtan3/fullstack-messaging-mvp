@@ -1,0 +1,6 @@
+com/example/messenger/dto/ChatMessage.class
+com/example/messenger/config/WebSocketConfig.class
+com/example/messenger/websocket/ChatWebSocketHandler.class
+com/example/messenger/MessengerApplication.class
+com/example/messenger/service/SessionRegistry.class
+com/example/messenger/websocket/UsernameHandshakeInterceptor.class
