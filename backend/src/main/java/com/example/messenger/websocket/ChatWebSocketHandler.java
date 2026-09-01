@@ -1,6 +1,7 @@
 package com.example.messenger.websocket;
 
 import com.example.messenger.dto.ChatMessage;
+import com.example.messenger.service.ChatService;
 import com.example.messenger.service.SessionRegistry;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -24,9 +25,12 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     private final SessionRegistry sessionRegistry;
     private final ObjectMapper objectMapper;
 
-    public ChatWebSocketHandler(SessionRegistry sessionRegistry, ObjectMapper objectMapper){
+    private final ChatService chatService;
+
+    public ChatWebSocketHandler(SessionRegistry sessionRegistry, ObjectMapper objectMapper, ChatService chatService){
         this.sessionRegistry = sessionRegistry;
         this.objectMapper = objectMapper;
+        this.chatService = chatService;
     }
 
     @Override
@@ -88,6 +92,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
         ChatMessage outgoing = new ChatMessage("CHAT", sender, recipient, incoming.content().trim(),
                 clientMessageId, Instant.now());
+
+        chatService.saveMessage(outgoing);
 
         Optional<WebSocketSession> recipientSession = sessionRegistry.find(recipient);
         if(recipientSession.isEmpty()){
