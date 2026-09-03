@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
+    // A private conversation is bidirectional, so both sender-recipient directions are queried together.
     @Query("""
             SELECT m
             FROM MessageEntity m

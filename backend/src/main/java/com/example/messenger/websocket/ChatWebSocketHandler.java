@@ -55,6 +55,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession webSocketSession, TextMessage message) throws IOException {
+        // Trust the handshake session, not a client-provided "from" value that could impersonate another user.
         String sender = webSocketSession.getAttributes().get("username").toString();
 
         ChatMessage incoming;
@@ -77,6 +78,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             return;
         }
 
+        // Bound payload size so one client cannot consume excessive memory or network capacity.
         if (incoming.content().length() > MAX_LENGTH) {
             sendError(webSocketSession, incoming.clientMessageId(), "Message exceeds maximum length.");
             return;
@@ -85,6 +87,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         String recipient = incoming.to().trim().toLowerCase(Locale.ROOT);
 
         String clientMessageId;
+        // Preserve a client ID for future acknowledgements or duplicate detection without implementing full idempotency.
         if(StringUtils.hasText(incoming.clientMessageId()))
             clientMessageId = incoming.clientMessageId();
         else
@@ -124,6 +127,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     private void sendJson(WebSocketSession webSocketSession, ChatMessage message) throws IOException {
         String json = objectMapper.writeValueAsString(message);
 
+        // Serialise writes per session because concurrent WebSocket sends are not guaranteed to be safe.
         synchronized (webSocketSession){
             if(webSocketSession.isOpen()){
                 webSocketSession.sendMessage(new TextMessage(json));

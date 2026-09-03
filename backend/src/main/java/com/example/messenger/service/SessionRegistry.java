@@ -8,16 +8,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class SessionRegistry {
+    // WebSocket callbacks may run concurrently, so session updates must be thread-safe.
     private final ConcurrentHashMap<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
 
     public boolean register(String username, WebSocketSession webSocketSession){
+        // One active session per username avoids ambiguous delivery across multiple browser sessions in this MVP.
         WebSocketSession existingSession = sessions.putIfAbsent(username, webSocketSession);
 
         if(existingSession==null)
             return true;
 
         if(!existingSession.isOpen())
-            return sessions.replace(username, existingSession, (WebSocketSession) sessions);
+            return sessions.replace(username, existingSession, webSocketSession);
 
         return false;
     }

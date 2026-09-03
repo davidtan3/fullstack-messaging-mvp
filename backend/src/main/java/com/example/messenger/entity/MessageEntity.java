@@ -8,6 +8,7 @@ import java.time.Instant;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "messages")
 public class MessageEntity{
     @Id

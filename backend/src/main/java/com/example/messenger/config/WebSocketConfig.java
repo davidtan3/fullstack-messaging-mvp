@@ -22,6 +22,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry){
+        // Raw WebSocket keeps the assessment's core routing logic inside this application.
         registry.addHandler((WebSocketHandler) chatWebSocketHandler, "/ws")
                 .addInterceptors((HandshakeInterceptor) usernameHandshakeInterceptor)
                 .setAllowedOrigins("http://localhost:5173");

@@ -12,6 +12,7 @@ public class ChatService {
     private final MessageRepository messageRepository;
 
     public void saveMessage(ChatMessage chatMessage){
+        // Keep the API message separate from the database entity so either model can evolve independently.
         MessageEntity entity = new MessageEntity(
                 chatMessage.from(),
                 chatMessage.to(),
